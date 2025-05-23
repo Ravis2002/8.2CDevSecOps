@@ -48,7 +48,7 @@ pipeline {
       }
     }
 
-    stage('SonarCloud Analysis') {
+  stage('SonarCloud Analysis') {
   steps {
     bat """
       REM — clean up any previous scanner directory
@@ -58,9 +58,8 @@ pipeline {
       curl -sSfLo sonar-scanner-cli-4.6.2.2472-windows.zip ^
         https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-windows.zip
 
-      REM — unzip with overwrite
-      powershell -Command "Expand-Archive -Path 'sonar-scanner-cli-4.6.2.2472-windows.zip' `
-        -DestinationPath 'sonar-scanner-cli-4.6.2.2472-windows' -Force"
+      REM — unzip with overwrite in one PowerShell call
+      powershell -NoProfile -Command "Expand-Archive -Path 'sonar-scanner-cli-4.6.2.2472-windows.zip' -DestinationPath 'sonar-scanner-cli-4.6.2.2472-windows' -Force"
 
       REM — force Java 21 for the scanner
       set "JAVA_HOME=C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.7.6-hotspot"
@@ -76,6 +75,7 @@ pipeline {
     """
   }
 }
+
 
   }
 }
