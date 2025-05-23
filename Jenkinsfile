@@ -1,8 +1,6 @@
 pipeline {
   agent any
-  tools {
-    jdk 'JDK21'
-  }
+  
 
   stages {
     stage('Checkout') {
@@ -45,6 +43,8 @@ pipeline {
   steps {
     withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
       bat '''
+        set "JAVA_HOME=C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.7.6-hotspot"
+        set "PATH=%JAVA_HOME%\\bin;%PATH%"
         curl -O https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-windows.zip
         powershell -Command "Expand-Archive sonar-scanner-cli-4.6.2.2472-windows.zip -DestinationPath ."
         set SONAR_TOKEN=%SONAR_TOKEN%
