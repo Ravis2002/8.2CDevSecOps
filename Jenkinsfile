@@ -1,5 +1,7 @@
 pipeline {
-  agent any
+  agent {
+    docker { image 'node:18-alpine' }
+  }
 
   stages {
     stage('Checkout') {
@@ -16,7 +18,7 @@ pipeline {
 
     stage('Run Tests') {
       steps {
-        sh 'npm test || true' // Keeps pipeline running even if tests fail
+        sh 'npm test || true'
       }
     }
 
