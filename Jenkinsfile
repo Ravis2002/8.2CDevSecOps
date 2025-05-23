@@ -49,31 +49,34 @@ pipeline {
     }
 
     stage('SonarCloud Analysis') {
-      steps {
-        bat """
-          REM — clean up any previous scanner directory
-          if exist sonar-scanner-cli-4.6.2.2472-windows rd /s /q sonar-scanner-cli-4.6.2.2472-windows
+  steps {
+    bat """
+      REM — clean up any previous scanner directory
+      if exist sonar-scanner-cli-4.6.2.2472-windows rd /s /q sonar-scanner-cli-4.6.2.2472-windows
 
-          REM — download & unzip (with overwrite)
-          curl -sSfLo sonar-scanner-cli-4.6.2.2472-windows.zip ^
-            https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-windows.zip
-          powershell -Command "Expand-Archive -Path sonar-scanner-cli-4.6.2.2472-windows.zip `
-                              -DestinationPath sonar-scanner-cli-4.6.2.2472-windows -Force"
+      REM — download the scanner zip
+      curl -sSfLo sonar-scanner-cli-4.6.2.2472-windows.zip ^
+        https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-windows.zip
 
-          REM — point at your JDK-21 install
-          set "JAVA_HOME=C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.7.6-hotspot"
-          set "PATH=%JAVA_HOME%\\bin;%PATH%"
+      REM — unzip with overwrite
+      powershell -Command "Expand-Archive -Path 'sonar-scanner-cli-4.6.2.2472-windows.zip' `
+        -DestinationPath 'sonar-scanner-cli-4.6.2.2472-windows' -Force"
 
-          REM — run the scanner
-          sonar-scanner-cli-4.6.2.2472-windows\\bin\\sonar-scanner.bat ^
-            -Dsonar.projectKey=Ravis2002_8.2CDevSecOps ^
-            -Dsonar.organization=YourOrganizationKey ^
-            -Dsonar.sources=. ^
-            -Dsonar.host.url=https://sonarcloud.io ^
-            -Dsonar.login=%SONAR_TOKEN%
-        """
-      }
-    }
+      REM — force Java 21 for the scanner
+      set "JAVA_HOME=C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.7.6-hotspot"
+      set "PATH=%JAVA_HOME%\\bin;%PATH%"
+
+      REM — run SonarCloud
+      sonar-scanner-cli-4.6.2.2472-windows\\bin\\sonar-scanner.bat ^
+        -Dsonar.projectKey=Ravis2002_8.2CDevSecOps ^
+        -Dsonar.organization=YourOrganizationKey ^
+        -Dsonar.sources=. ^
+        -Dsonar.host.url=https://sonarcloud.io ^
+        -Dsonar.login=%SONAR_TOKEN%
+    """
+  }
+}
+
   }
 }
 
