@@ -41,8 +41,9 @@ pipeline {
         set SONAR_TOKEN=%SONAR_TOKEN%
         sonar-scanner-4.6.2.2472-windows\\bin\\sonar-scanner.bat -Dsonar.projectBaseDir=%WORKSPACE%
       '''
-        }
-      }
     }
+  }
+}
+
   } 
 } 
