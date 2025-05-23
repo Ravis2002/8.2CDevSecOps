@@ -39,7 +39,7 @@ pipeline {
 }
 
 
- stage('SonarCloud Analysis') {
+stage('SonarCloud Analysis') {
   steps {
     withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
       bat '''
