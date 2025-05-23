@@ -1,7 +1,7 @@
 pipeline {
   agent any
   tools {
-    JDK 'JDK21'
+    jdk 'JDK21'
   }
 
   stages {
@@ -34,6 +34,12 @@ pipeline {
         bat 'npm audit || exit 0'
       }
     }
+    stage('Check Java Version') {
+  steps {
+    bat 'java -version'
+  }
+}
+
 
  stage('SonarCloud Analysis') {
   steps {
